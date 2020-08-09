@@ -11,7 +11,6 @@ const router = express.Router();
 const cors = require('cors');
 
 app.disable('x-powered-by'); 
-//app.use(stage.headers);
 app.use(cors(stage.corsOptions));
 app.use(express.static('public'));
 app.use(express.json());
@@ -27,22 +26,18 @@ mongoose.connect(stage.mongoUri, { useNewUrlParser: true, useCreateIndex: true, 
 const connection = mongoose.connection;
 connection.once('open', () => console.log("MongoDB connection established"));
 
-app.route('/').get(function (req, res) {
-    res.send("Main page");
-});
 
 app.use('/api/v1/', routes(router));
 
-app.get('*', function (req, res) {
-    res.json({
-        res: "404 not found"
-    });
+app.route('/index.js').get((req, res) => {
+    res.sendFile('index.js', {root: "./public"});
+});
+app.route('/router.js').get((req, res) => {
+    res.sendFile('router.js', {root: "./public"});
 });
 
-app.post('*', function (req, res) {
-    res.json({
-        res: "404 not found"
-    });
+app.route('*').get((req, res) => {
+    res.sendFile('index.html', {root: "./public"});
 });
 
 app.listen(stage.port, () => {
