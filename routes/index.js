@@ -3,7 +3,7 @@ const Budget = require('../models/budget.model');
 
 module.exports = (router) => {
 
-    router.route('/all').get(async (request, response) => {
+    router.route('/budget').get(async (request, response) => {
         const strip = { '__v': 0};
         try {
             const list = await Budget.find({}, strip).exec();
@@ -14,20 +14,19 @@ module.exports = (router) => {
         }
     });
 
-    router.route('/byId').get(async (request, response) => {
-        const {id} = request.query;
-        const strip = { '__v': 0};
+    router.route('/budget/group/:id').get(async (request, response) => {
+        const {id} = request.params;
         try {
-            const record = await Budget.find({ _id: id }, strip).exec();
-            if(record.length > 0){
+            const records = await Budget.find({ groupId: id }).exec();
+            if(records.length > 0){
                 response.json({
                     status: 1,
-                    record: record[0]
+                    list: records
                 });
             } else {
                 response.json({
-                    status: -1,
-                    error: "not found"
+                    status: 1,
+                    list: []
                 });
             }
             
@@ -36,7 +35,7 @@ module.exports = (router) => {
         }
     });
 
-    router.route('/add').post(async (request, response) => {
+    router.route('/budget').post(async (request, response) => {
         try {
             const newRecord = await new Budget(request.body).save();
             response.json({
@@ -51,10 +50,10 @@ module.exports = (router) => {
         }
     });
 
-    router.route('/delete').delete(async (request, response) => {
-        const {id} = request.query;
+    router.route('/budget/:id').delete(async (request, response) => {
+        const {id} = request.params;
         try {
-            const records = await Budget.deleteOne({ _id: id }).exec();
+            const records = await Budget.deleteOne({_id: id}).exec();
             if(records.deletedCount > 0){
                 response.json({
                     status: 1,
@@ -74,7 +73,7 @@ module.exports = (router) => {
         }
     });
 
-    router.route('/update').put(async (request, response) => {
+    router.route('/budget').put(async (request, response) => {
         const object = request.body;
 
         try {
