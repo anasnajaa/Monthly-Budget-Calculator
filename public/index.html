@@ -4,25 +4,235 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MBC</title>
+    <title>Budget Calculator</title>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url("./assets/pattern.png");
+            background-repeat: repeat;
+        }
+    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-        <a class="navbar-brand" href="/"><span class="fas fa-1x fa-money-check-alt"></span>&nbsp; MBC</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarCollapse"><ul id="main-nav" class="navbar-nav mr-auto"></ul></div>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+        <a class="navbar-brand" href="#">Budget Calculator</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <button class="btn btn-sm btn-primary m-1" type="button" data-toggle="modal"
+                    data-target="#modal-add-edit-entry">Add Entry</button>
+                <button class="btn btn-sm btn-info m-1" type="button">Toggle Charts</button>
+                <button class="btn btn-sm btn-dark m-1" type="button" data-toggle="modal"
+                    data-target="#modal-budget-settings">Budget Settings</button>
+                <button class="btn btn-sm btn-light m-1" type="button" data-toggle="modal"
+                    data-target="#modal-about">About</button>
+            </ul>
+        </div>
     </nav>
+    <div class="container">
+        <div class="row mt-2">
+            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="alert alert-primary" role="alert">Balance:<span id="txt-total-balance" class="float-right">0
+                        KWD</span></div>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="alert alert-success" role="alert">Total Credit:<span id="txt-total-credit"
+                        class="float-right">0 KWD</span>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="alert alert-warning" role="alert">Total Debit:<span id="txt-total-debit"
+                        class="float-right">0 KWD</span></div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Title</th>
+                            <th width="20%" scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="budget-table"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-    <main id="main-container" role="main" class="container"></main>
+    <div class="modal fade" id="modal-add-edit-entry" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="modal-add-edit-Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-add-edit-Label">Add Entry</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-0 m-0">
+                    <div class="card p-0 m-0">
+                        <img src="./assets/expense-cover.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <fieldset class="form-group">
+                                        <div class="row">
+                                            <legend class="col-form-label col-sm-3 pt-0">Operation Type</legend>
+                                            <div class="col-sm-9">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="gridRadios"
+                                                        id="radio-debit" value="debit" checked>
+                                                    <label class="form-check-label" for="radio-debit">Debit</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="gridRadios"
+                                                        id="radio-credit" value="credit">
+                                                    <label class="form-check-label" for="radio-credit">Credit</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-2">
+                                    <div class="form-group row">
+                                        <label for="txt-title" class="col-sm-3 col-form-label">Title <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9"><input id="txt-title" type="text" aria-label="Title"
+                                                class="form-control" required></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="txt-desc" class="col-sm-3 col-form-label">Notes</label>
+                                        <div class="col-sm-9"><input id="txt-notes" type="text" aria-label="Notes"
+                                                class="form-control"></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="txt-amount" class="col-sm-3 col-form-label">Amount <span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input id="txt-amount" type="number" class="form-control"
+                                                    aria-label="Amount" required>
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text">KWD</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-1">
+                                    <small> <span class="text-danger">*</span> required</small>
+                                </div>
+                                <div class="col-12" id="budget-form-alert">
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-    <script src="/router.js"></script>
-    <script src="/index.js"></script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-cancel-budget" class="btn btn-secondary"
+                        data-dismiss="modal">Cancel</button>
+                    <button type="submit" id="btn-save-budget" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-budget-settings" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="modal-budget-Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-budget-Label">Budget Settings</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-0 m-0">
+                    <div class="card p-0 m-0">
+                        <img src="./assets/budget-cover.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Current Budget ID</h2>
+                                    <div id="session-id" class="alert alert-info" role="alert"></div>
+                                    <p>This session is saved by default on this device. To access it from different
+                                        browser/device, copy this ID and paste it inside the Load ID box.</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-2">
+                                    <div class="form-group row">
+                                        <label for="txt-budget-id" class="col-sm-3 col-form-label">Load ID</label>
+                                        <div class="col-sm-9"><input id="txt-budget-id" type="text" aria-label="Title"
+                                                class="form-control"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-about" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="modal-about-Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-about-Label">About</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-0 m-0">
+                    <div class="card p-0 m-0">
+                        <img src="./assets/about-cover.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Technology stack</h2>
+                                    <p>MongoDB, NodeJS, Express, Bootstrap, Vanilla Javascript</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+    <script src="/scripts/api.js"></script>
+    <script src="/scripts/util.js"></script>
+    <script src="/scripts/templates.js"></script>
+    <script src="/scripts/index.js"></script>
 </body>
 
 </html>
