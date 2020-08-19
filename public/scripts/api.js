@@ -23,6 +23,18 @@ const api = {
             return null; 
         }
     },
+    updateBudget: async (objectToAdd) => {
+        try {
+            const response = await fetch(`${api.endpoint}/budget`,
+            { method: 'PUT', headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}, body: JSON.stringify(objectToAdd)});
+            if(response.ok){
+                let data = await response.json();
+                return data.updatedRecord;
+            }
+        } catch (error) {
+            return null; 
+        }
+    },
     getBudgetsByGroup: async (groupId)=>{
         try {
             const response = await fetch(`${api.endpoint}/budget/group/${groupId}`);
