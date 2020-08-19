@@ -79,9 +79,10 @@ module.exports = (router) => {
         try {
             const budgets = await Budget.updateOne({ _id: object.id }, object).exec();
             if(budgets.n > 0 || budgets.nModified > 0){
+                const records = await Budget.findOne({ _id: object.id }).exec();
                 response.json({
                     status: 1,
-                    updated: budgets.nModified
+                    updatedRecord: records
                 });
             } else {
                 response.json({
