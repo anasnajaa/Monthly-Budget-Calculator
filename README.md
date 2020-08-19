@@ -1,3 +1,2 @@
-# Monthly-Budget-Calculator
- Calculate your monthly budget.
+# Monthly Budget Calculator
  Technology Stack: MongoDB, NodeJS, Express, Bootstrap, Native JavaScript.
