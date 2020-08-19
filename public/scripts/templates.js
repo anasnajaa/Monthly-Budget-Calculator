@@ -15,8 +15,7 @@ const templates = {
                 <button id="${budgetObject.btnDelete}" type="button" class="btn btn-sm btn-outline-danger"><i class="far fa-trash-alt"></i></button>
                 <button id="${budgetObject.btnInfo}" type="button" class="btn btn-sm btn-outline-info"><i class="fas fa-sticky-note"></i></button>
             </td>
-        </tr>
-        `;
+        </tr>`;
     },
     modal: (id, title, bodyId, footerId, closeId) => {
         return `
