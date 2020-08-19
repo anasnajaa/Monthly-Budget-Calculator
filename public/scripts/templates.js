@@ -11,9 +11,9 @@ const templates = {
             <th scope="row">${symb}${budgetObject.amount} KWD</th>
             <td>${budgetObject.title}</td>
             <td>
-                <button id="${budgetObject.btnEdit}" type="button" class="btn btn-sm btn-outline-primary m-1"><i class="far fa-edit"></i></button>
-                <button id="${budgetObject.btnDelete}" type="button" class="btn btn-sm btn-outline-danger m-1"><i class="far fa-trash-alt"></i></button>
-                <button id="${budgetObject.btnInfo}" type="button" class="btn btn-sm btn-outline-info m-1"><i class="fas fa-sticky-note"></i></button>
+                <button id="${budgetObject.btnEdit}" type="button" class="btn btn-sm btn-outline-primary"><i class="far fa-edit"></i></button>
+                <button id="${budgetObject.btnDelete}" type="button" class="btn btn-sm btn-outline-danger"><i class="far fa-trash-alt"></i></button>
+                <button id="${budgetObject.btnInfo}" type="button" class="btn btn-sm btn-outline-info"><i class="fas fa-sticky-note"></i></button>
             </td>
         </tr>
         `;
@@ -178,7 +178,7 @@ const templates = {
                             <tr>
                                 <th scope="col">Amount</th>
                                 <th scope="col">Title</th>
-                                <th width="20%" scope="col">Actions</th>
+                                <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="${budgetTableId}"></tbody>
